@@ -1,0 +1,46 @@
+GET http://localhost:3000/
+
+###
+
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "nama_lengkap": "kim jenner",
+  "username": "kimjenner",
+  "email": "kimjenner@email.com",
+  "nomor_hp": "0838434927423",
+  "password": "123456"
+}
+###
+
+
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kimjila@email.com",
+  "password": "123456"
+}
+
+###
+
+GET http://localhost:3000/api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtpbWplbm5lckBlbWFpbC5jb20iLCJpYXQiOjE3Nzc5NTY2MzgsImV4cCI6MTc3ODA0MzAzOH0.r_XsuvkfPCRhxw1396xblrXKLqhhS_ffRmntZaRnobc
+ap
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kimjenner@email.com",
+  "password": "123456"
+}
+
+> {%
+    // Script ini akan menyimpan token ke global variable WebStorm
+    client.global.set("auth_token", response.body.token);
+%}
+
+### 2. Get Profile (Gunakan variabel)
+GET http://localhost:3000/api/auth/profile
+Authorization: Bearer {{auth_token}}
