@@ -1,12 +1,14 @@
 import React from "react";
-// Gunakan ../ untuk keluar dari folder "pages", lalu masuk ke folder "component"
+// Impor komponen yang sudah ada sebelumnya
 import Navbar from "../component/navbar";
 import Hero from "../component/Hero";
 import WhyChooseUs from "../component/WhyChooseUs";
-import StudioTypes from "../component/StudioTypes"; // Jika sudah membuat file ini/ Pastikan file ini sudah dibuat
+import AboutUs from "../component/AboutUs"; // TAMBAHKAN BARIS INI
+import StudioTypes from "../component/StudioTypes";
 import Portfolio from "../component/Portfolio";
 import Pricing from "../component/Pricing";
 import Reviews from "../component/Reviews";
+import ContactUs from "../component/ContactUs"; // Pastikan ini juga sudah ada jika ingin dipakai
 import Footer from "../component/footer";
 
 function Dashboard() {
@@ -15,29 +17,15 @@ function Dashboard() {
       <Navbar />
 
       <main className="flex-grow">
-        {/* 1. Bagian Visual Utama */}
         <Hero />
-
-        {/* 2. Bagian Alasan Memilih (Aksen Putih & Pastel) */}
         <WhyChooseUs />
-
-        {/* 3. Bagian Pilihan Studio di Bandung */}
+        <AboutUs /> {/* Sekarang ini tidak akan menyebabkan error lagi */}
         <StudioTypes />
-
         <Portfolio />
-
         <Pricing />
-
         <Reviews />
-
+        <ContactUs />
         <Footer />
-
-        {/* Section Portfolio & Studio Mapping akan di sini nanti */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-6">
-            {/* Mapping data dari port 3000 kamu bisa diletakkan di sini */}
-          </div>
-        </section>
       </main>
     </div>
   );

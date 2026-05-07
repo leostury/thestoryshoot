@@ -1,0 +1,20 @@
+.react-calendar {
+  border: none !important;
+  font-family: "Inter", sans-serif;
+}
+
+.react-calendar__tile--active {
+  background: #3b82f6 !important; /* Biru seperti screenshot */
+  border-radius: 8px;
+  color: white !important;
+}
+
+.react-calendar__tile--now {
+  background: #fef9e7 !important; /* Kuning pastel untuk hari ini */
+  border-radius: 8px;
+}
+
+.react-calendar__navigation button {
+  font-weight: 800;
+  color: #1e293b;
+}

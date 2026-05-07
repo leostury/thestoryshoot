@@ -44,3 +44,8 @@ Content-Type: application/json
 ### 2. Get Profile (Gunakan variabel)
 GET http://localhost:3000/api/auth/profile
 Authorization: Bearer {{auth_token}}
+
+###
+
+GET  http://localhost:3000/api/categories
+

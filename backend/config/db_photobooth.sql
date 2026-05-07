@@ -165,15 +165,101 @@ CREATE TABLE studio_images (
                                is_primary BOOLEAN DEFAULT FALSE, -- Foto utama untuk katalog
                                FOREIGN KEY (id_studio) REFERENCES studio(id_studio) ON DELETE CASCADE
 );
-SELECT * FROM users;
 
-DELETE * FROM users;
 
+
+
+ALTER TABLE kategori
+    ADD COLUMN url_gambar VARCHAR(255) AFTER kode_kategori;
+
+ALTER TABLE kategori
+    ADD COLUMN deskripsi_kategori TEXT AFTER nama_kategori;
 
 SELECT id_user, nama_lengkap, username, email, status FROM users;
 
-INSERT 
 
-DELETE FROM studio;
+INSERT INTO studio (kode_studio, nama_studio, id_kategori, deskripsi, harga, url_gambar, status)
+VALUES
+    ('PB-01', 'Classic Photobooth', 1,
+     'FITUR: Sesi mandiri tanpa fotografer.\nFASILITAS: Aksesoris lucu, lighting cerah, & background solid.\nDURASI: 10 Menit sesi foto (unlimited shots).\nHASIL: 2 Lembar cetakan strip & file digital via QR Code.',
+     50000, '/images/classic-photobooth.jpeg', 'available');
+
+-- Set foto utama untuk Classic Photobooth
+INSERT INTO studio_images (id_studio, url_gambar, is_primary)
+VALUES (4, '/images/photobooth-detail-1.jpg', TRUE);
 
 
+-- 1. Matikan pengecekan foreign key
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- 2. Hapus tabelnya
+DROP TABLE IF EXISTS studio;
+DROP TABLE IF EXISTS kategori;
+
+-- 3. Nyalakan kembali pengecekan
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- 4. Buat ulang tabel kategori dengan struktur lengkap
+CREATE TABLE kategori (
+                          id_kategori INT AUTO_INCREMENT PRIMARY KEY,
+                          nama_kategori VARCHAR(50) NOT NULL,
+                          deskripsi_kategori TEXT,
+                          kode_kategori VARCHAR(10) UNIQUE NOT NULL,
+                          url_gambar VARCHAR(255),
+                          status ENUM('active', 'inactive') DEFAULT 'active'
+);
+
+-- 5. Buat ulang tabel studio (karena tadi ikut dihapus supaya sinkron)
+CREATE TABLE studio (
+                        id_studio INT AUTO_INCREMENT PRIMARY KEY,
+                        kode_studio VARCHAR(20) UNIQUE NOT NULL,
+                        nama_studio VARCHAR(100) NOT NULL,
+                        deskripsi TEXT,
+                        url_gambar VARCHAR(255),
+                        id_kategori INT NOT NULL,
+                        harga INT NOT NULL,
+                        status ENUM('available', 'maintenance', 'hidden') DEFAULT 'available',
+                        FOREIGN KEY (id_kategori) REFERENCES kategori(id_kategori)
+);
+
+-- 6. Sekarang Insert datanya (Gak akan error duplicate lagi)
+INSERT INTO kategori (nama_kategori, deskripsi_kategori, kode_kategori, url_gambar, status)
+VALUES
+    ('Photobooth', 'Abadikan momen seru instan dengan berbagai pilihan frame lucu.', 'PB', '/assets/photobooth.jpg', 'active'),
+    ('Self Photo', 'Ekspresikan dirimu dengan bebas di studio privat tanpa fotografer.', 'SP', '/assets/selfphoto.jpg', 'active'),
+    ('Studio Pro', 'Hasil foto kualitas tinggi dengan lighting profesional dan fotografer ahli.', 'PS', '/assets/photostudio.jpg', 'active');
+
+INSERT INTO kategori (nama_kategori, deskripsi_kategori, kode_kategori, url_gambar, status)
+VALUES
+    (
+        'Photobooth',
+        'Abadikan momen seru instan dengan berbagai pilihan frame dan stiker lucu.',
+        'PB',
+        'frontend/src/assets/photobooth.jpeg',
+        'active'
+    ),
+    (
+        'Self Photo',
+        'Ekspresikan dirimu dengan bebas di studio privat tanpa gangguan fotografer.',
+        'SP',
+        'frontend/src/assets/studio_photo.jpeg',
+        'active'
+    ),
+    (
+        'Studio Pro',
+        'Hasil foto kualitas tinggi dengan dukungan lighting profesional dan fotografer ahli.',
+        'PS',
+        'frontend/src/assets/self_photo.jpeg',
+        'active'
+    );
+
+
+UPDATE kategori SET url_gambar = '/images/photobooth.jpeg' WHERE id_kategori = 1;
+UPDATE kategori SET url_gambar = '/images/self_photo.jpeg' WHERE id_kategori = 2;
+UPDATE kategori SET url_gambar = '/images/studio_photo.jpeg' WHERE id_kategori = 3;
+
+
+
+
+
+SELECT id_kategori, nama_kategori, url_gambar FROM kategori;
