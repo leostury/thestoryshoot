@@ -48,4 +48,27 @@ Authorization: Bearer {{auth_token}}
 ###
 
 GET  http://localhost:3000/api/categories
+###
+
+### 1. Login untuk dapat Token
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kimjila@email.com",
+  "password": "123456"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+### 2. Buat Booking menggunakan Token
+POST http://localhost:3000/api/bookings
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "id_studio": 8,
+  "tanggal": "2026-05-07",
+  "jam": "12:00"
+}
 

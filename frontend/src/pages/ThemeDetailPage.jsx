@@ -96,21 +96,21 @@ const ThemeDetailPage = () => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid gap-3">
                   <button
                     onClick={() =>
                       navigate(`/booking?theme=${theme.id_studio}`)
                     }
                     className="flex items-center justify-center gap-2 py-2.5 bg-white border border-gray-200 rounded-lg text-[10px] font-bold text-gray-600 hover:bg-gray-50 transition-colors"
                   >
-                    PESAN <HiOutlineShoppingBag className="w-4 h-4" />
+                    Booking <HiOutlineShoppingBag className="w-4 h-4" />
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => navigate(`/studio/${theme.id_studio}`)}
                     className="py-2.5 bg-white border border-gray-200 rounded-lg text-[10px] font-bold text-gray-600 hover:bg-gray-50 transition-colors"
                   >
                     LIHAT DETAIL
-                  </button>
+                  </button> */}
                 </div>
               </motion.div>
             ))

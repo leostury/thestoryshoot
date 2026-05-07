@@ -1,20 +1,115 @@
+/* Responsif calendar */
 .react-calendar {
+  width: 100% !important;
   border: none !important;
-  font-family: "Inter", sans-serif;
+  font-family: inherit !important;
+  background: transparent !important;
 }
 
-.react-calendar__tile--active {
-  background: #3b82f6 !important; /* Biru seperti screenshot */
-  border-radius: 8px;
-  color: white !important;
-}
-
-.react-calendar__tile--now {
-  background: #fef9e7 !important; /* Kuning pastel untuk hari ini */
-  border-radius: 8px;
+.react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .react-calendar__navigation button {
-  font-weight: 800;
-  color: #1e293b;
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 36px;
+}
+
+.react-calendar__navigation button:hover {
+  background: #f1f5f9;
+}
+
+.react-calendar__navigation__label {
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: #1e293b !important;
+  flex-grow: 1;
+}
+
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase;
+  text-decoration: none !important;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none !important;
+}
+
+.react-calendar__month-view__days__day {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  padding: 8px 4px !important;
+  border-radius: 8px !important;
+  aspect-ratio: 1;
+}
+
+.react-calendar__month-view__days__day:hover {
+  background: #f1f5f9 !important;
+}
+
+.react-calendar__tile--active,
+.react-calendar__tile--active:hover {
+  background: #1e293b !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+
+.react-calendar__tile--now {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  font-weight: 800 !important;
+  border-radius: 8px !important;
+}
+
+.react-calendar__tile--now.react-calendar__tile--active {
+  background: #1e293b !important;
+  color: white !important;
+}
+
+.react-calendar__tile:disabled {
+  background: none !important;
+  color: #cbd5e1 !important;
+  cursor: not-allowed !important;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #cbd5e1 !important;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+  .react-calendar__month-view__days__day {
+    font-size: 11px !important;
+    padding: 6px 2px !important;
+  }
+
+  .react-calendar__navigation__label {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-calendar__month-view__days__day {
+    font-size: 10px !important;
+    padding: 5px 1px !important;
+  }
+
+  .react-calendar__navigation button {
+    padding: 6px;
+    min-width: 28px;
+  }
 }
