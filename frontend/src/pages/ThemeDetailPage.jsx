@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { HiArrowLeft, HiOutlineShoppingBag } from "react-icons/hi2";
 import Navbar from "../component/navbar";
 import Footer from "../component/footer";
-import assets from "../assets/assets";
 
 const ThemeDetailPage = () => {
   const { type } = useParams();
@@ -15,17 +14,14 @@ const ThemeDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Di dalam useEffect ThemeDetailPage.jsx
     const fetchStudios = async () => {
       try {
         setLoading(true);
         const categoryMap = { pb: 1, sp: 2, ps: 3 };
         const idKategori = categoryMap[type] || 1;
 
-        // Menggunakan variabel dari .env
-        const apiUrl = import.meta.env.VITE_API_URL;
         const response = await axios.get(
-          `${apiUrl}/studios?kategori=${idKategori}`,
+          `${import.meta.env.VITE_API_URL}/studios?kategori=${idKategori}`,
         );
 
         if (response.data.status) {
@@ -51,7 +47,6 @@ const ThemeDetailPage = () => {
     <div className="min-h-screen bg-[#FDFDFD]">
       <Navbar />
       <main className="pt-28 pb-20 container mx-auto px-6">
-        {/* Header */}
         <div className="flex items-center justify-between mb-12">
           <button
             onClick={() => navigate("/studios")}
@@ -67,7 +62,6 @@ const ThemeDetailPage = () => {
           </h2>
         </div>
 
-        {/* Grid Katalog */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
             <div className="col-span-full text-center py-20 text-gray-400">
@@ -84,7 +78,7 @@ const ThemeDetailPage = () => {
               >
                 <div className="aspect-square bg-gray-200 rounded-xl mb-5 overflow-hidden">
                   <img
-                    src={theme.gambar || assets.photobooth1}
+                    src={`${import.meta.env.VITE_BASE_URL}${theme.url_gambar}`}
                     alt={theme.nama_studio}
                     className="w-full h-full object-cover mix-blend-multiply opacity-80"
                   />

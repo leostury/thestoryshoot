@@ -1,16 +1,15 @@
 import studioModels from "../models/studioModels.mjs";
+import db from "../config/db.mjs";
 
-// Di studioController.mjs
 export const getAllStudios = async (req, res) => {
   try {
-    const { kategori } = req.query; // Ini akan menerima 'pb', 'sp', atau 'ps'
+    const { kategori } = req.query; // menerima id_kategori angka
 
-    // Query diubah sedikit di model untuk JOIN ke tabel kategori berdasarkan kode
     const [studios] = await db.query(
       `SELECT s.* FROM studio s 
        JOIN kategori k ON s.id_kategori = k.id_kategori 
-       WHERE k.kode_kategori = ?`,
-      [kategori.toUpperCase()],
+       WHERE k.id_kategori = ?`,
+      [kategori],
     );
 
     res.status(200).json({

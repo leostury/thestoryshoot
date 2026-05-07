@@ -263,3 +263,92 @@ UPDATE kategori SET url_gambar = '/images/studio_photo.jpeg' WHERE id_kategori =
 
 
 SELECT id_kategori, nama_kategori, url_gambar FROM kategori;
+
+
+INSERT INTO studio (kode_studio, nama_studio, deskripsi, url_gambar, id_kategori, harga, status)
+VALUES
+-- ========================
+-- PHOTOBOOTH (id_kategori = 1)
+-- ========================
+('PB-01', 'Neon Glow Booth',
+ 'FITUR: Lampu neon warna-warni otomatis & timer foto mandiri.\nFASILITAS: 10+ properti lucu, background neon, printer instan.\nDURASI: 15 menit sesi foto bebas.\nHASIL: 3 lembar cetak strip + file digital via QR Code.\nBENEFIT: Cocok untuk foto bareng hingga 4 orang, hasil cetak langsung di tempat.',
+ '/images/neon-photobooth.jpeg', 1, 50000, 'available'),
+
+('PB-02', 'Retro Vintage Booth',
+ 'FITUR: Filter kamera ala polaroid & film grain otomatis.\nFASILITAS: Properti vintage (kacamata, topi, bingkai), background jadul.\nDURASI: 15 menit sesi foto bebas.\nHASIL: 3 lembar cetak polaroid + file digital via QR Code.\nBENEFIT: Nuansa tahun 90an yang timeless, cocok untuk konten estetik.',
+ '/images/vintage-photobooth.jpeg', 1, 50000, 'available'),
+
+('PB-03', 'Pastel Dream Booth',
+ 'FITUR: Background pastel ganti otomatis 3 warna.\nFASILITAS: Properti bunga, balon, & boneka lucu.\nDURASI: 15 menit sesi foto bebas.\nHASIL: 3 lembar cetak strip + file digital via QR Code.\nBENEFIT: Warna lembut yang sempurna untuk konten Instagram & TikTok.',
+ '/images/photobooth.jpeg', 1, 55000, 'available'),
+
+('PB-04', 'Idol Booth',
+ 'FITUR: Konsep photo booth ala Photoism Korea dengan filter kamera HD otomatis & pencahayaan soft idol.
+ FASILITAS: Properti K-Pop (lightstick, album, polaroid idol), background pastel & hologram, stiker & frame ala Photoism, printer instan.
+ DURASI: 15 menit sesi foto bebas unlimited shots.
+ HASIL: 2 lembar cetak strip dengan frame idol lucu + soft file digital via QR Code.
+ BENEFIT: Rasakan sensasi foto ala bintang K-Pop, hasil cetak bisa langsung dijadikan koleksi seperti photocard idol asli!',
+ '/images/idol-photobooth.jpeg', 1, 60000, 'available'),
+
+('PB-05', 'Monochrome Booth',
+ 'FITUR: Kamera dengan filter hitam putih profesional.\nFASILITAS: Background marble putih & hitam, properti minimalis.\nDURASI: 15 menit sesi foto bebas.\nHASIL: 3 lembar cetak hitam putih + file digital via QR Code.\nBENEFIT: Hasil foto artistik dan elegan, cocok untuk foto profil formal.',
+ '/images/monocrome-photobooth.jpeg', 1, 50000, 'available'),
+
+('PB-06', 'Groceries Booth',
+ 'FITUR: Konsep foto aesthetic ala supermarket & grocery store dengan prop makanan lucu.
+ FASILITAS: Properti grocery (keranjang belanja mini, sayur & buah artificial, paper bag lucu), background rak supermarket & warna-warni cerah, stiker & frame ala aesthetic grocery, printer instan.
+ DURASI: 15 menit sesi foto bebas unlimited shots.
+ HASIL: 2 lembar cetak strip dengan frame grocery lucu + soft file digital via QR Code.
+ BENEFIT: Konsep unik & hits di media sosial, cocok untuk foto solo maupun bareng teman dengan vibes daily life yang aesthetic!',
+ '/images/glosir-photobooth.jpeg', 1, 65000, 'available');
+
+
+INSERT INTO studio (kode_studio, nama_studio, deskripsi, url_gambar, id_kategori, harga, status)
+VALUES
+('SP-01', 'Minimalist White Studio',
+    'FITUR: Remote shutter & tripod profesional disediakan.\nFASILITAS: Background seamless putih, softbox lighting, cermin besar.\nDURASI: 60 menit sesi privat.\nHASIL: File digital resolusi tinggi dikirim via Google Drive.\nBENEFIT: Cocok untuk foto outfit, lookbook, & konten creator tanpa fotografer.',
+    '/images/minimalist-self.jpeg', 2, 150000, 'available'),
+
+('SP-02', 'Newspaper Studio',
+ 'FITUR: Remote shutter & ring light adjustable dengan nuansa editorial koran klasik.
+ FASILITAS: Background dinding wallpaper koran vintage, properti koran & majalah lama, meja baca antik, kursi kayu klasik, & lampu meja retro.
+ DURASI: 60 menit sesi privat.
+ HASIL: File digital resolusi tinggi dikirim via Google Drive.
+ BENEFIT: Nuansa vintage editorial yang unik & estetik, cocok untuk foto bertema journalist, retro aesthetic, & konten storytelling yang berkesan.',
+ '/images/koran-self.jpeg', 2, 150000, 'available'),
+
+('SP-03', 'Train Compartment Studio',
+ 'FITUR: Remote shutter & lighting warm tone ala pencahayaan gerbong kereta klasik.
+ FASILITAS: Set kursi gerbong kereta vintage, jendela dengan pemandangan countryside, rak bagasi kayu, properti tiket & koper antik, & lampu gantung kereta retro.
+ DURASI: 60 menit sesi privat.
+ HASIL: File digital resolusi tinggi dikirim via Google Drive.
+ BENEFIT: Nuansa perjalanan kereta yang romantis & sinematik, cocok untuk foto couple, solo traveling aesthetic, & konten bertema journey yang hits di media sosial.',
+ '/images/train-self.jpeg', 2, 175000, 'available');
+
+
+INSERT INTO studio (kode_studio, nama_studio, deskripsi, url_gambar, id_kategori, harga, status)
+VALUES
+    ('PS-01', 'Classic Portrait Studio',
+     'FITUR: Fotografer profesional + 2 asisten lighting.\nFASILITAS: Strobo & softbox lengkap, background polos 5 warna, cermin full body.\nDURASI: 90 menit sesi foto terarah.\nHASIL: 10 foto terpilih edit profesional + file RAW via Google Drive.\nBENEFIT: Ideal untuk foto wisuda, foto profil LinkedIn, & keperluan formal.',
+     '/images/minimalist-studio.jpeg', 3, 350000, 'available'),
+
+    ('PS-02', 'Fashion Editorial Studio',
+     'FITUR: Fotografer fashion berpengalaman + 1 asisten.\nFASILITAS: Lighting dramatis Rembrandt, background tekstur premium, & kipas angin.\nDURASI: 90 menit sesi foto terarah.\nHASIL: 10 foto terpilih edit profesional + file RAW via Google Drive.\nBENEFIT: Hasil foto sekelas majalah fashion, cocok untuk portofolio model & brand.',
+     '/images/fashion-studio.jpeg', 3, 400000, 'available'),
+
+    ('PS-03', 'Family Portrait Studio',
+     'FITUR: Fotografer keluarga + asisten pose & properti.\nFASILITAS: Studio luas 6x8m, sofa & kursi keluarga, background warm tone.\nDURASI: 120 menit sesi foto santai.\nHASIL: 15 foto terpilih edit profesional + file RAW via Google Drive.\nBENEFIT: Momen keluarga terabadikan indah, cocok hingga 10 anggota keluarga.',
+     '/images/family-studio.jpeg', 3, 450000, 'available'),
+
+    ('PS-04', 'Wedding Pre-Wed Studio',
+     'FITUR: Fotografer wedding profesional + dekorator.\nFASILITAS: Dekorasi bunga segar, backdrop mewah, & tata cahaya romantis.\nDURASI: 120 menit sesi foto romantis.\nHASIL: 20 foto terpilih edit profesional + file RAW via Google Drive.\nBENEFIT: Kenangan pre-wedding indoor yang memukau tanpa perlu keluar kota.',
+     '/images/prewedding-studio.jpeg', 3, 500000, 'available'),
+
+    ('PS-05', 'Product Photography',
+     'FITUR: Fotografer produk + lighting macro spesialis.\nFASILITAS: Meja still life, backdrop kertas 10 warna, lensa macro, & diffuser.\nDURASI: 90 menit sesi foto produk.\nHASIL: 15 foto produk edit retouching + file RAW via Google Drive.\nBENEFIT: Foto produk berkualitas tinggi untuk marketplace, website, & iklan.',
+     '/images/product-studio.jpeg', 3, 375000, 'available');
+
+
+
+
+SELECT kode_studio, nama_studio, deskripsi FROM studio WHERE id_kategori = 3;
