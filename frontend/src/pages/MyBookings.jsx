@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Tambahkan ini untuk navigasi ke Invoice
+import { useNavigate } from "react-router-dom";
 import Navbar from "../component/navbar";
 import Footer from "../component/footer";
 
@@ -9,11 +9,10 @@ const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // State untuk Modal Pembayaran
   const [showPayModal, setShowPayModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [uploadLoading, setUploadLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   const fetchMyBookings = async () => {
     try {
@@ -36,10 +35,9 @@ const MyBookings = () => {
     fetchMyBookings();
   }, []);
 
-  // 1. Fungsi Upload ke Tabel Pembayaran
   const handleUploadPayment = async (e) => {
     e.preventDefault();
-    if (!file) return alert("Pilih file bukti transfer dulu ya!");
+    if (!file) return alert("Pilih file bukti transfer dulu!");
 
     setUploadLoading(true);
     const formData = new FormData();
@@ -50,7 +48,6 @@ const MyBookings = () => {
 
     try {
       const token = localStorage.getItem("token");
-      // Menggunakan endpoint upload payment yang baru
       await axios.post(
         `${import.meta.env.VITE_API_URL}/payments/upload`,
         formData,
@@ -61,10 +58,7 @@ const MyBookings = () => {
           },
         },
       );
-
-      alert(
-        "Bukti terkirim! Status berubah menjadi WAITING. Mohon tunggu konfirmasi.",
-      );
+      alert("Bukti terkirim! Menunggu verifikasi admin.");
       setShowPayModal(false);
       setFile(null);
       fetchMyBookings();
@@ -75,20 +69,17 @@ const MyBookings = () => {
     }
   };
 
-  // 2. Fungsi Admin Mini (Untuk ngetes status SUCCESS/PAID)
-  const handleAdminConfirm = async (id_booking) => {
-    if (!window.confirm("Konfirmasi pembayaran ini (Set as PAID)?")) return;
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
+    if (!window.confirm("Yakin ingin membatalkan pesanan ini?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/admin/confirm/${id_booking}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-      alert("Booking berhasil dikonfirmasi!");
+      await axios.delete(`${import.meta.env.VITE_API_URL}/bookings/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       fetchMyBookings();
     } catch (err) {
-      alert("Gagal konfirmasi admin.");
+      alert("Gagal menghapus.");
     }
   };
 
@@ -108,83 +99,82 @@ const MyBookings = () => {
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
       <Navbar />
-
       <main className="pt-32 pb-20 container mx-auto px-6 max-w-4xl">
-        <h1 className="text-3xl font-black text-slate-800 mb-8">
-          Riwayat Booking
-        </h1>
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <p className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em] mb-2">
+              History
+            </p>
+            <h1 className="text-4xl font-black text-slate-800 tracking-tighter text-shadow-sm">
+              Riwayat Booking
+            </h1>
+          </div>
+          <p className="text-slate-400 font-bold text-xs">
+            {bookings.length} Pesanan
+          </p>
+        </div>
 
         {loading ? (
-          <p className="text-center py-10 text-slate-400 font-bold">
-            Memuat data...
-          </p>
+          <div className="text-center py-20 font-black text-slate-300 uppercase animate-pulse">
+            Loading...
+          </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid gap-6">
             {bookings.map((item) => (
               <div
                 key={item.id_booking}
-                className="bg-white p-6 rounded-[2rem] shadow-sm flex flex-col md:flex-row justify-between items-center border border-slate-100"
+                onClick={() => navigate(`/bookings/${item.id_booking}`)}
+                className="group bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="flex gap-6 items-center">
+                <div className="flex gap-6 items-center w-full md:w-auto">
                   <img
                     src={`${import.meta.env.VITE_BASE_URL}${item.url_gambar}`}
-                    className="w-20 h-20 object-cover rounded-2xl"
+                    className="w-24 h-24 object-cover rounded-[1.8rem] shadow-md group-hover:scale-105 transition-transform"
                     alt=""
                   />
                   <div>
-                    <h3 className="font-black text-slate-800 uppercase leading-tight">
-                      {item.nama_studio}
-                    </h3>
-                    <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-widest">
-                      {item.tanggal} | {item.jam.slice(0, 5)} WIB
-                    </p>
                     <span
-                      className={`text-[10px] font-black px-3 py-1 rounded-full mt-2 inline-block uppercase tracking-wider ${getStatusStyle(item.status)}`}
+                      className={`text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider ${getStatusStyle(item.status)}`}
                     >
                       {item.status}
                     </span>
+                    <h3 className="font-black text-slate-800 uppercase text-lg mt-1">
+                      {item.nama_studio}
+                    </h3>
+                    <p className="text-[10px] text-slate-400 font-bold mt-0.5 uppercase tracking-widest">
+                      {new Date(item.tanggal).toLocaleDateString("id-ID", {
+                        day: "2-digit",
+                        month: "short",
+                      })}{" "}
+                      • {item.jam.slice(0, 5)} WIB
+                    </p>
                   </div>
                 </div>
 
-                <div className="text-right mt-4 md:mt-0 flex flex-col items-end gap-2">
-                  <p className="font-black text-xl text-slate-900">
+                <div className="flex flex-col items-end gap-3 mt-4 md:mt-0 w-full md:w-auto">
+                  <p className="font-black text-xl text-slate-900 tracking-tighter">
                     Rp {Number(item.total_harga).toLocaleString("id-ID")}
                   </p>
 
                   <div className="flex gap-2">
-                    {/* Tombol Bayar (Hanya jika Pending) */}
                     {item.status === "pending" && (
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setSelectedBooking(item);
                           setShowPayModal(true);
                         }}
-                        className="bg-slate-900 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-transform active:scale-95"
+                        className="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-colors"
                       >
-                        Bayar Sekarang
+                        Bayar
                       </button>
                     )}
-
-                    {/* Tombol Admin Mini (Untuk Test PAID) */}
-                    {(item.status === "waiting" ||
-                      item.status === "pending") && (
+                    {item.status === "pending" && (
                       <button
-                        onClick={() => handleAdminConfirm(item.id_booking)}
-                        className="bg-orange-50 text-orange-600 border border-orange-100 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest"
+                        onClick={(e) => handleDelete(e, item.id_booking)}
+                        className="bg-red-50 text-red-500 border border-red-100 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all"
                       >
-                        Confirm (Admin)
-                      </button>
-                    )}
-
-                    {/* Tombol Invoice (Hanya jika Success/Paid) */}
-                    {item.status === "success" && (
-                      <button
-                        onClick={() =>
-                          navigate(`/invoice/${item.kode_booking}`)
-                        }
-                        className="bg-green-600 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-green-100 transition-all hover:bg-green-700"
-                      >
-                        Lihat Invoice
+                        Batal
                       </button>
                     )}
                   </div>
@@ -194,9 +184,7 @@ const MyBookings = () => {
           </div>
         )}
       </main>
-
       {/* MODAL PEMBAYARAN */}
-      {/* MODAL PEMBAYARAN - UI REFRESH */}
       {showPayModal && (
         <div className="fixed inset-0 bg-slate-900/60 z-[200] flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-300">
           <div className="bg-white w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl border border-white animate-in zoom-in duration-300">
@@ -334,7 +322,7 @@ const MyBookings = () => {
           </div>
         </div>
       )}
-
+      ;
       <Footer />
     </div>
   );

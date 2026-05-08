@@ -398,10 +398,7 @@ CREATE TABLE pembayaran (
                                 REFERENCES users(id_user)
 );
 
-ALTER TABLE pembayaran
-    ADD COLUMN kode_unik SMALLINT NOT NULL DEFAULT 0,        -- angk-- 1. INISIALISASI DATABASE
-CREATE DATABASE IF NOT EXISTS aplikasi_booking;
-USE aplikasi_booking;
+
 
 -- 2. PEMBERSIHAN TABEL (URUTAN PENTING KARENA FOREIGN KEY)
 SET FOREIGN_KEY_CHECKS = 0;
@@ -806,12 +803,6 @@ ALTER TABLE pembayaran
 
 
 DESCRIBE pembayaran;
-a 001-999
-    ADD COLUMN jumlah_tagihan INT NOT NULL DEFAULT 0,        -- harga asli
-    ADD COLUMN expired_at DATETIME;                          -- batas waktu bayar
-
-
-DESCRIBE pembayaran;
 
 
 SELECT * FROM booking WHERE kode_booking = 'BK-20260507-001';
@@ -833,3 +824,46 @@ ALTER TABLE booking
 -- Tambahkan 'waiting' ke ENUM tabel pembayaran (jika ingin digunakan di sana juga)
 ALTER TABLE pembayaran
     MODIFY COLUMN status_pembayaran ENUM('pending', 'waiting', 'success', 'failed') DEFAULT 'pending';
+
+
+
+SHOW TABLES;
+
+SELECT * FROM pembayaran WHERE kode_booking = 'BK-260507-739';
+
+SELECT b.kode_booking, p.kode_booking, p.bukti_transfer
+FROM booking b
+         LEFT JOIN pembayaran p ON b.kode_booking = p.kode_booking
+WHERE b.id_booking = 8;
+
+DESCRIBE booking;
+
+ALTER TABLE booking MODIFY COLUMN status ENUM('pending', 'waiting', 'confirmed', 'cancelled', 'success');
+
+
+CREATE TRIGGER trg_pembayaran_after_update
+    AFTER UPDATE ON pembayaran
+    FOR EACH ROW
+BEGIN
+    IF NEW.status_pembayaran = 'success' THEN
+        UPDATE booking SET status = 'confirmed' WHERE kode_booking = NEW.kode_booking;
+    END IF;
+END;
+
+
+UPDATE booking
+SET status = 'pending'
+WHERE id_studio = (SELECT id_studio FROM studio WHERE nama_studio = 'Retro Vintage Booth')
+  AND (status IS NULL OR status = '');
+
+UPDATE booking
+SET status = 'pending'
+WHERE id_studio = 2 AND (status IS NULL OR status = '');
+
+-- Mengubah semua booking yang statusnya bermasalah menjadi 'pending'
+UPDATE booking
+SET status = 'pending'
+WHERE status IS NULL OR status = '' OR status NOT IN ('pending', 'waiting', 'confirmed', 'cancelled', 'success');
+
+ALTER TABLE booking
+    MODIFY COLUMN status ENUM('pending', 'waiting', 'confirmed', 'cancelled', 'success') DEFAULT 'pending';

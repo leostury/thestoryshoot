@@ -137,3 +137,59 @@ export const cancelBooking = async (req, res) => {
     res.status(500).json({ status: false, error: err.message });
   }
 };
+
+export const getDetail = async (req, res) => {
+  try {
+    // Ambil ID dari URL (/api/bookings/8)
+    const { id } = req.params;
+    const id_user = req.userId;
+
+    const data = await bookingModels.getById(id, id_user);
+
+    if (!data) {
+      return res.status(404).json({
+        status: false,
+        message: "Data booking tidak ditemukan atau bukan milik Anda.",
+      });
+    }
+
+    res.json({ status: true, data });
+  } catch (err) {
+    res.status(500).json({ status: false, error: err.message });
+  }
+};
+
+export const reschedule = async (req, res) => {
+  try {
+    const { tanggal, jam } = req.body;
+    const success = await bookingModels.updateJadwal(
+      req.params.id,
+      req.userId,
+      tanggal,
+      jam,
+    );
+    if (!success)
+      return res
+        .status(400)
+        .json({ status: false, message: "Gagal ubah jadwal" });
+    res.json({ status: true, message: "Jadwal berhasil diperbarui!" });
+  } catch (err) {
+    res.status(500).json({ status: false, error: err.message });
+  }
+};
+
+export const remove = async (req, res) => {
+  try {
+    const success = await bookingModels.deletePermanent(
+      req.params.id,
+      req.userId,
+    );
+    if (!success)
+      return res
+        .status(400)
+        .json({ status: false, message: "Gagal menghapus booking" });
+    res.json({ status: true, message: "Booking berhasil dihapus permanen" });
+  } catch (err) {
+    res.status(500).json({ status: false, error: err.message });
+  }
+};

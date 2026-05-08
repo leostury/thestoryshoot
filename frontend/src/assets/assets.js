@@ -8,6 +8,7 @@ import studio1 from "./studios1.jpeg";
 import studio2 from "./studios2.jpeg";
 import photobooth1 from "./result-photobooth.jpeg";
 import photobooth2 from "./group photobooth pic.jpeg";
+import studio from "./Studio.jpeg";
 
 const assets = {
   photobooth,
@@ -20,6 +21,7 @@ const assets = {
   studio2,
   photobooth1,
   photobooth2,
+  studio,
 };
 
 export default assets;

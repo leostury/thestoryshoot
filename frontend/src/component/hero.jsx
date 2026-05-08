@@ -1,6 +1,7 @@
 import React from "react";
-import { motion } from "framer-motion"; // Pastikan install: npm install framer-motion
+import { motion } from "framer-motion";
 import heroImg from "../assets/hero.png";
+import assets from "../assets/assets";
 
 const Hero = () => {
   return (
@@ -58,17 +59,9 @@ const Hero = () => {
           transition={{ duration: 1 }}
           className="relative"
         >
-          {/* Decorative Card melayang agar "Strong" */}
-          <div className="absolute -top-10 -left-10 bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-2xl z-20 hidden md:block border border-white">
-            <p className="text-3xl font-black text-slate-900">4.9/5</p>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
-              Customer Rating
-            </p>
-          </div>
-
-          <div className="relative w-full max-w-[550px] aspect-[4/5] bg-white rounded-[4rem] p-4 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden border border-slate-50">
+          <div className="relative w-full max-w-[550px] aspect-[5/5] bg-white rounded-[4rem] p-4 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden border border-slate-50">
             <img
-              src={heroImg}
+              src={assets.studio}
               className="w-full h-full object-cover rounded-[3.5rem]"
               alt="Hero"
             />

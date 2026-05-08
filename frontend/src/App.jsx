@@ -12,6 +12,7 @@ import Login from "./pages/login";
 import BookingPage from "./pages/BookingPage";
 import MyBookings from "./pages/MyBookings";
 import InvoicePage from "./pages/InvoicePage";
+import BookingDetail from "./pages/BookingDetail";
 
 const AutoLogoutHandler = ({ children }) => {
   const navigate = useNavigate();
@@ -72,6 +73,8 @@ function App() {
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/my-bookings" element={<MyBookings />} />
           <Route path="/invoice/:kode_booking" element={<InvoicePage />} />
+
+          <Route path="/bookings/:id" element={<BookingDetail />} />
         </Routes>
       </AutoLogoutHandler>
     </Router>

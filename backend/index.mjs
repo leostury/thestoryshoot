@@ -18,11 +18,17 @@ const __dirname = path.dirname(__filename);
 app.use(cors());
 app.use(express.json());
 
+// ... import lainnya ...
+
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/payments", paymentRoutes);
-app.use("/api", apiRoutes);
+app.use("/api", apiRoutes); // Ini akan menghandle /api/bookings/...
+
+// ... rest of code ...
 
 app.get("/", (req, res) => {
   res.send("API Poseidon jalan di port " + port);

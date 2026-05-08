@@ -1,7 +1,6 @@
 import db from "../config/db.mjs";
 
 const kategoriModels = {
-  // Mengambil semua kategori yang aktif
   getAll: async () => {
     try {
       const [rows] = await db.query(
@@ -13,7 +12,6 @@ const kategoriModels = {
     }
   },
 
-  // Mengambil satu kategori berdasarkan kode (misal: 'PB')
   getByKode: async (kode) => {
     try {
       const [rows] = await db.query(

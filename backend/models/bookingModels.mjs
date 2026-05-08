@@ -12,7 +12,7 @@ const bookingModels = {
       console.log("rows:", rows);
       return rows.map((r) => r.jam);
     } catch (err) {
-      console.log("DB ERROR:", err.message); // ini yang penting
+      console.log("DB ERROR:", err.message);
       throw err;
     }
   },
@@ -27,12 +27,12 @@ const bookingModels = {
     return { id_booking: result.insertId, kode_booking };
   },
 
- updateStatusAndProof: async (kode_booking, status, bukti_file) => {
+  updateStatusAndProof: async (kode_booking, status, bukti_file) => {
     const [result] = await db.query(
       `UPDATE booking 
        SET status = ?, bukti_pembayaran = ? 
        WHERE kode_booking = ?`,
-      [status, bukti_file, kode_booking]
+      [status, bukti_file, kode_booking],
     );
     return result.affectedRows > 0;
   },
@@ -50,7 +50,38 @@ const bookingModels = {
     );
     return rows;
   },
-};
+  getById: async (id_booking, id_user) => {
+    const [rows] = await db.query(
+      `SELECT b.*, s.nama_studio, s.url_gambar, s.durasi, k.nama_kategori,
+            p.bukti_transfer as bukti_pembayaran
+     FROM booking b
+     JOIN studio s ON b.id_studio = s.id_studio
+     JOIN kategori k ON s.id_kategori = k.id_kategori
+     LEFT JOIN pembayaran p ON b.kode_booking = p.kode_booking
+     WHERE b.id_booking = ? AND b.id_user = ?`,
+      [id_booking, id_user],
+    );
+    return rows[0];
+  },
+
+  updateJadwal: async (id_booking, id_user, tanggal, jam) => {
+    const [result] = await db.query(
+      `UPDATE booking 
+       SET tanggal = ?, jam = ?, status = 'pending' 
+       WHERE id_booking = ? AND id_user = ?`,
+      [tanggal, jam, id_booking, id_user],
+    );
+    return result.affectedRows > 0;
+  },
+
+  deletePermanent: async (id_booking, id_user) => {
+    const [result] = await db.query(
+      `DELETE FROM booking WHERE id_booking = ? AND id_user = ?`,
+      [id_booking, id_user],
+    );
+    return result.affectedRows > 0;
+  },
+
   cancel: async (id_booking, id_user) => {
     const [result] = await db.query(
       `UPDATE booking SET status = 'cancelled'
