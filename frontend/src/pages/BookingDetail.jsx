@@ -38,18 +38,6 @@ const BookingDetail = () => {
     fetchDetail();
   }, [id]);
 
-  // =========================
-  // DEBUG URL GAMBAR
-  // =========================
-  console.log("booking:", booking);
-
-  console.log("bukti_pembayaran:", booking?.bukti_pembayaran);
-
-  console.log(
-    "FINAL URL:",
-    `${import.meta.env.VITE_BASE_URL}/images/payments/${booking?.bukti_pembayaran?.replace("/images/", "")}`,
-  );
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -86,21 +74,11 @@ const BookingDetail = () => {
                   Bukti Pembayaran Terlampir
                 </p>
 
-                {/* DEBUG URL */}
-                <p className="text-xs text-red-500 break-all mb-3">
-                  URL:
-                  {`${import.meta.env.VITE_BASE_URL}/images/payments/${booking?.bukti_pembayaran?.replace("/images/", "")}`}
-                </p>
-
                 <div className="bg-slate-50 rounded-2xl p-4 border border-dashed border-slate-200">
                   <img
                     src={`${import.meta.env.VITE_BASE_URL}/images/payments/${booking?.bukti_pembayaran?.replace("/images/", "")}`}
                     className="w-full h-48 object-contain rounded-lg"
                     alt="Bukti Transfer"
-                    onError={(e) => {
-                      console.log("GAMBAR ERROR");
-                      console.log("src gagal:", e.target.src);
-                    }}
                   />
                 </div>
               </div>
