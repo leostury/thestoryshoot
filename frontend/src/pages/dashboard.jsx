@@ -8,7 +8,7 @@ import StudioTypes from "../component/StudioTypes";
 import Portfolio from "../component/Portfolio";
 import Pricing from "../component/Pricing";
 import Reviews from "../component/Reviews";
-import ContactUs from "../component/ContactUs"; // Pastikan ini juga sudah ada jika ingin dipakai
+// import ContactUs from "../component/ContactUs"; // Pastikan ini juga sudah ada jika ingin dipakai
 import Footer from "../component/footer";
 
 function Dashboard() {
@@ -24,7 +24,7 @@ function Dashboard() {
         <Portfolio />
         <Pricing />
         <Reviews />
-        <ContactUs />
+        {/* <ContactUs /> */}
         <Footer />
       </main>
     </div>

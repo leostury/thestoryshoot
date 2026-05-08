@@ -111,13 +111,6 @@ const Pricing = () => {
                   </li>
                 ))}
               </ul>
-
-              <button
-                className={`w-full py-4 rounded-2xl border-2 border-slate-100 font-bold text-slate-900 transition-all duration-300 ${plan.button} hover:text-white hover:border-transparent flex items-center justify-center gap-2 group`}
-              >
-                Booking Sekarang
-                <HiArrowLongRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </button>
             </div>
           ))}
         </div>

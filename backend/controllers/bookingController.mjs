@@ -1,7 +1,6 @@
 import bookingModels from "../models/bookingModels.mjs";
 import db from "../config/db.mjs";
 
-// GET /api/bookings/check
 export const checkAvailability = async (req, res) => {
   try {
     const { id_studio, tanggal } = req.query;
@@ -20,12 +19,12 @@ export const checkAvailability = async (req, res) => {
   }
 };
 
-// POST /api/bookings
 export const createBooking = async (req, res) => {
   try {
     const { id_studio, tanggal, jam } = req.body;
     const id_user = req.userId;
 
+    // 1. Validasi Auth
     if (!id_user) {
       return res.status(401).json({
         status: false,
@@ -33,6 +32,7 @@ export const createBooking = async (req, res) => {
       });
     }
 
+    // 2. Validasi Input
     if (!id_studio || !tanggal || !jam) {
       return res.status(400).json({
         status: false,
@@ -40,6 +40,7 @@ export const createBooking = async (req, res) => {
       });
     }
 
+    // 3. Ambil harga studio
     const [[studio]] = await db.query(
       "SELECT harga FROM studio WHERE id_studio = ?",
       [id_studio],
@@ -52,6 +53,7 @@ export const createBooking = async (req, res) => {
       });
     }
 
+    // 4. Cek ketersediaan (Double check sebelum insert)
     const bookedSlots = await bookingModels.getBookedSlots(id_studio, tanggal);
     if (bookedSlots.includes(jam)) {
       return res.status(409).json({
@@ -60,6 +62,8 @@ export const createBooking = async (req, res) => {
       });
     }
 
+    // 5. Simpan ke Database
+    // Di model, status sudah di-hardcode 'pending', jadi kita bisa kirim balik manual
     const booking = await bookingModels.create({
       id_user,
       id_studio,
@@ -68,10 +72,15 @@ export const createBooking = async (req, res) => {
       total_harga: studio.harga,
     });
 
+    // 6. Response Sesuai Permintaan Kamu
     res.status(201).json({
       status: true,
       message: "Booking berhasil dibuat!",
-      data: booking,
+      data: {
+        id_booking: booking.id_booking,
+        kode_booking: booking.kode_booking,
+      },
+      status_booking: "pending", // Langsung definisikan string "pending" di sini
     });
   } catch (err) {
     if (err.code === "ER_DUP_ENTRY") {
@@ -83,27 +92,47 @@ export const createBooking = async (req, res) => {
     res.status(500).json({ status: false, error: err.message });
   }
 };
+// bookingController.mjs
 
-// GET /api/bookings/my
+// controllers/bookingController.mjs
+
 export const getMyBookings = async (req, res) => {
   try {
     const id_user = req.userId;
-
-    if (!id_user) {
-      return res.status(401).json({
-        status: false,
-        message: "User tidak terautentikasi",
-      });
-    }
-
     const bookings = await bookingModels.getByUser(id_user);
-    res.json({ status: true, data: bookings });
+
+    const formattedData = bookings.map((item) => {
+      // Tambahkan console log di sini
+      console.log(`=== DEBUG BOOKING #${item.kode_booking} ===`);
+      console.log("Nama Studio:", item.nama_studio);
+      console.log("Raw Studio Image (Alias):", item.studio_image);
+      console.log("Raw URL Gambar:", item.url_gambar);
+
+      const finalImage = item.studio_image || item.url_gambar;
+      console.log("Hasil Akhir url_gambar:", finalImage);
+      console.log("========================================");
+
+      return {
+        id_booking: item.id_booking,
+        kode_booking: item.kode_booking,
+        nama_studio: item.nama_studio,
+        url_gambar: finalImage,
+        tanggal: item.tanggal,
+        jam: item.jam,
+        total_harga: item.total_harga,
+        status: item.status?.toLowerCase() || "pending",
+      };
+    });
+
+    res.json({
+      status: true,
+      data: formattedData,
+    });
   } catch (err) {
     res.status(500).json({ status: false, error: err.message });
   }
 };
 
-// PUT /api/bookings/:id/cancel
 export const cancelBooking = async (req, res) => {
   try {
     const id_user = req.userId;
@@ -138,43 +167,44 @@ export const cancelBooking = async (req, res) => {
   }
 };
 
-export const getDetail = async (req, res) => {
+export const reschedule = async (req, res) => {
+  const { id } = req.params;
+  const { tanggal, jam } = req.body;
+  const id_user = req.userId;
+
   try {
-    // Ambil ID dari URL (/api/bookings/8)
-    const { id } = req.params;
-    const id_user = req.userId;
+    console.log("Memulai proses reschedule untuk ID:", id);
 
-    const data = await bookingModels.getById(id, id_user);
+    const result = await bookingModels.updateJadwal(id, id_user, tanggal, jam);
 
-    if (!data) {
-      return res.status(404).json({
-        status: false,
-        message: "Data booking tidak ditemukan atau bukan milik Anda.",
-      });
-    }
-
-    res.json({ status: true, data });
+    return res.status(200).json({
+      status: true,
+      message: "Jadwal berhasil diperbarui!",
+      data: result,
+    });
   } catch (err) {
-    res.status(500).json({ status: false, error: err.message });
+    console.error("Error di Controller Reschedule:", err.message);
+    return res.status(500).json({
+      status: false,
+      message: err.message || "Gagal mengubah jadwal",
+    });
   }
 };
 
-export const reschedule = async (req, res) => {
+export const getDetail = async (req, res) => {
   try {
-    const { tanggal, jam } = req.body;
-    const success = await bookingModels.updateJadwal(
-      req.params.id,
-      req.userId,
-      tanggal,
-      jam,
-    );
-    if (!success)
+    const { id } = req.params;
+    const id_user = req.userId;
+    const data = await bookingModels.getById(id, id_user);
+
+    if (!data) {
       return res
-        .status(400)
-        .json({ status: false, message: "Gagal ubah jadwal" });
-    res.json({ status: true, message: "Jadwal berhasil diperbarui!" });
+        .status(404)
+        .json({ status: false, message: "Data tidak ditemukan" });
+    }
+    res.json({ status: true, data });
   } catch (err) {
-    res.status(500).json({ status: false, error: err.message });
+    res.status(500).json({ status: false, message: err.message });
   }
 };
 

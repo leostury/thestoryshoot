@@ -14,6 +14,11 @@ import MyBookings from "./pages/MyBookings";
 import InvoicePage from "./pages/InvoicePage";
 import BookingDetail from "./pages/BookingDetail";
 
+// App.jsx
+import ReschedulePage from "./pages/ReschedulePage";
+
+// Di dalam <Routes>
+
 const AutoLogoutHandler = ({ children }) => {
   const navigate = useNavigate();
 
@@ -75,6 +80,7 @@ function App() {
           <Route path="/invoice/:kode_booking" element={<InvoicePage />} />
 
           <Route path="/bookings/:id" element={<BookingDetail />} />
+          <Route path="/reschedule/:id" element={<ReschedulePage />} />
         </Routes>
       </AutoLogoutHandler>
     </Router>

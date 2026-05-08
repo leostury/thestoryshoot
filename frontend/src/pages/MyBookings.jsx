@@ -322,7 +322,6 @@ const MyBookings = () => {
           </div>
         </div>
       )}
-      ;
       <Footer />
     </div>
   );

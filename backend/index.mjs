@@ -15,23 +15,30 @@ const port = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// ... import lainnya
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // PENTING UNTUK FORM-DATA
 
-// ... import lainnya ...
-
+app.use(express.static(path.join(__dirname, "public")));
+// Perbaiki static path agar lebih aman
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
+// Jalankan rute
 app.use("/api/auth", authRoutes);
 app.use("/api/payments", paymentRoutes);
-app.use("/api", apiRoutes); // Ini akan menghandle /api/bookings/...
+app.use("/api", apiRoutes);
+// ... sisanya
 
-// ... rest of code ...
-
-app.get("/", (req, res) => {
-  res.send("API Poseidon jalan di port " + port);
+// Di index.mjs setelah app.use("/api", apiRoutes);
+console.log("--- DAFTAR RUTE TERDETEKSI ---");
+apiRoutes.stack.forEach((layer) => {
+  if (layer.route) {
+    console.log(
+      `${Object.keys(layer.route.methods).join(",").toUpperCase()} -> /api${layer.route.path}`,
+    );
+  }
 });
 
 app.use((req, res) => {

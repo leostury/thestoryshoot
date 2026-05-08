@@ -72,3 +72,14 @@ Authorization: Bearer {{auth_token}}
   "jam": "12:00"
 }
 
+###
+
+POST http://localhost:3000/api/bookings
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "id_studio": 8,
+  "tanggal": "2026-05-17",
+  "jam": "12:00"
+}

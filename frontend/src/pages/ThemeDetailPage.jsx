@@ -23,6 +23,9 @@ const ThemeDetailPage = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/studios?kategori=${idKategori}`,
         );
+        console.log("=== DEBUG RESPONSE API ===");
+        console.log("Status Code:", response.status);
+        console.log("Full Data:", response.data);
 
         if (response.data.status) {
           setThemes(response.data.data);

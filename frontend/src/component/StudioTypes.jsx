@@ -97,16 +97,6 @@ const StudioTypes = () => {
                   </h3>
                 </div>
               </div>
-
-              <div className="px-4">
-                <p className="text-slate-500 leading-relaxed text-base mb-8 min-h-[4rem]">
-                  {cat.deskripsi_kategori}
-                </p>
-                <button className="flex items-center gap-4 px-8 py-4 bg-white border-2 border-slate-100 rounded-[1.5rem] text-sm font-bold text-slate-900 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-500 group/btn">
-                  Lihat Paket
-                  <HiArrowLongRight className="w-6 h-6 transition-transform group-hover/btn:translate-x-2" />
-                </button>
-              </div>
             </div>
           ))}
         </div>
