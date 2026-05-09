@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { HiArrowLeft, HiOutlineShoppingBag } from "react-icons/hi2";
-import Navbar from "../component/navbar";
+import Navbar from "../component/Navbar.jsx";
 import Footer from "../component/footer";
 
 const ThemeDetailPage = () => {

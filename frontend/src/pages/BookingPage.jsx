@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./BookingCalendar.css";
-import Navbar from "../component/navbar";
+import Navbar from "../component/Navbar.jsx";
 import Footer from "../component/footer";
 import axios from "axios";
 

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
-import Navbar from "../component/navbar";
+import Navbar from "../component/Navbar.jsx";
 import Footer from "../component/footer";
 
 const ReschedulePage = () => {

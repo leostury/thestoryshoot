@@ -1,6 +1,6 @@
 // src/pages/BookingHistory.jsx
 import React from "react";
-import Navbar from "../component/navbar";
+import Navbar from "../component/Navbar.jsx";
 
 const BookingHistory = () => {
   return (

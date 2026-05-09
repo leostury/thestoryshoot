@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../component/navbar";
+import Navbar from "../component/Navbar.jsx";
 import Footer from "../component/footer";
 
 const MyBookings = () => {
