@@ -18,7 +18,7 @@ const __dirname = path.dirname(__filename);
 // ... import lainnya
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // PENTING UNTUK FORM-DATA
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 // Perbaiki static path agar lebih aman
