@@ -4,7 +4,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { HiArrowLeft, HiOutlineShoppingBag } from "react-icons/hi2";
 import Navbar from "../component/Navbar.jsx";
-import Footer from "../component/footer";
+import Footer from "../component/Footer.jsx";
 
 const ThemeDetailPage = () => {
   const { type } = useParams();

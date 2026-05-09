@@ -9,7 +9,7 @@ import Portfolio from "../component/Portfolio";
 import Pricing from "../component/Pricing";
 import Reviews from "../component/Reviews";
 // import ContactUs from "../component/ContactUs"; // Pastikan ini juga sudah ada jika ingin dipakai
-import Footer from "../component/footer";
+import Footer from "../component/Footer.jsx";
 
 function Dashboard() {
   return (

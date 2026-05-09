@@ -4,7 +4,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./BookingCalendar.css";
 import Navbar from "../component/Navbar.jsx";
-import Footer from "../component/footer";
+import Footer from "../component/Footer.jsx";
 import axios from "axios";
 
 const BookingPage = () => {

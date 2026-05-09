@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../component/Navbar.jsx";
-import Footer from "../component/footer";
+import Footer from "../component/Footer.jsx";
 
 const StudiosPage = () => {
   const navigate = useNavigate();
