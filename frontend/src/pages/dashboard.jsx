@@ -1,9 +1,9 @@
 import React from "react";
 // Impor komponen yang sudah ada sebelumnya
 import Navbar from "../component/Navbar.jsx";
-import Hero from "../component/Hero";
+import Hero from "../component/Hero.jsx";
 import WhyChooseUs from "../component/WhyChooseUs";
-import AboutUs from "../component/AboutUs"; // TAMBAHKAN BARIS INI
+import AboutUs from "../component/AboutUs";
 import StudioTypes from "../component/StudioTypes";
 import Portfolio from "../component/Portfolio";
 import Pricing from "../component/Pricing";
