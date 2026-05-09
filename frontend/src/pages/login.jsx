@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_BASE_URL;
-
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +25,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const endpoint = isLogin ? '/login' : '/register';
-    const url = `/api/auth${endpoint}`;
+    const apiPrefix = import.meta.env.VITE_API_URL || '/api';
+    const url = `${apiPrefix}/auth${endpoint}`;
 
     const payload = isLogin
       ? { email: formData.email, password: formData.password }
@@ -41,7 +40,7 @@ function Login() {
         };
 
     try {
-      const res = await axios.post(url, payload, { baseURL: API_BASE_URL });
+      const res = await axios.post(url, payload, { withCredentials: true });
       if (isLogin && res.data.token) {
         localStorage.setItem('token', res.data.token);
         alert('Login Berhasil! Selamat datang di The Story Shoot.');
