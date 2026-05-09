@@ -1,9 +1,9 @@
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,12 +12,12 @@ function Login() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    nama_lengkap: "",
-    username: "",
-    email: "",
-    nomor_hp: "",
-    password: "",
-    confirmPassword: "",
+    nama_lengkap: '',
+    username: '',
+    email: '',
+    nomor_hp: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endpoint = isLogin ? "/login" : "/register";
+    const endpoint = isLogin ? '/login' : '/register';
     const url = `/api/auth${endpoint}`;
 
     const payload = isLogin
@@ -43,16 +43,16 @@ function Login() {
     try {
       const res = await axios.post(url, payload, { baseURL: API_BASE_URL });
       if (isLogin && res.data.token) {
-        localStorage.setItem("token", res.data.token);
-        alert("Login Berhasil! Selamat datang di The Story Shoot.");
-        navigate("/");
+        localStorage.setItem('token', res.data.token);
+        alert('Login Berhasil! Selamat datang di The Story Shoot.');
+        navigate('/');
         window.location.reload();
       } else if (!isLogin) {
-        alert("Registrasi Berhasil! Silakan Login.");
+        alert('Registrasi Berhasil! Silakan Login.');
         setIsLogin(true);
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Gagal terhubung ke server");
+      alert(err.response?.data?.message || 'Gagal terhubung ke server');
     }
   };
 
@@ -76,12 +76,12 @@ function Login() {
         <div className="w-full md:w-3/5 p-8 md:p-16">
           <div className="mb-10">
             <h2 className="text-4xl font-black text-slate-800 tracking-tight">
-              {isLogin ? "Halo Lagi! 👋" : "Gabung Yuk! ✨"}
+              {isLogin ? 'Halo Lagi! 👋' : 'Gabung Yuk! ✨'}
             </h2>
             <p className="text-slate-400 font-medium mt-3">
               {isLogin
-                ? "Masuk ke akun Anda."
-                : "Daftar akun baru The Story Shoot."}
+                ? 'Masuk ke akun Anda.'
+                : 'Daftar akun baru The Story Shoot.'}
             </p>
           </div>
 
@@ -126,12 +126,12 @@ function Login() {
 
             {/* PASSWORD SECTION - Muncul 2 kolom saat Register */}
             <div
-              className={`grid gap-4 ${isLogin ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"}`}
+              className={`grid gap-4 ${isLogin ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}
             >
               <div className="relative">
                 <input
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   onChange={handleChange}
                   placeholder="Password"
                   className="w-full px-6 py-4 pr-14 rounded-2xl bg-[#F0F4F8] border-2 border-transparent focus:border-[#A7A7DB] outline-none"
@@ -150,7 +150,7 @@ function Login() {
                 <div className="relative">
                   <input
                     name="confirmPassword"
-                    type={showConfirm ? "text" : "password"}
+                    type={showConfirm ? 'text' : 'password'}
                     onChange={handleChange}
                     placeholder="Konfirmasi Password"
                     className="w-full px-6 py-4 pr-14 rounded-2xl bg-[#F0F4F8] border-2 border-transparent focus:border-[#FFD1DC] outline-none"
@@ -171,18 +171,18 @@ function Login() {
               type="submit"
               className="w-full bg-[#A7A7DB] hover:bg-[#9696C9] text-white py-5 rounded-2xl font-black text-lg shadow-xl mt-6"
             >
-              {isLogin ? "Let's Go! 🚀" : "Daftar Sekarang 🌈"}
+              {isLogin ? "Let's Go! 🚀" : 'Daftar Sekarang 🌈'}
             </button>
           </form>
 
           <p className="text-center text-sm font-bold text-slate-400 mt-10">
-            {isLogin ? "Baru di sini?" : "Sudah punya akun?"}{" "}
+            {isLogin ? 'Baru di sini?' : 'Sudah punya akun?'}{' '}
             <button
               type="button"
               onClick={() => setIsLogin(!isLogin)}
               className="text-[#A7A7DB] font-black underline decoration-2 underline-offset-4 ml-1"
             >
-              {isLogin ? "Bikin akun yuk!" : "Login di sini!"}
+              {isLogin ? 'Bikin akun yuk!' : 'Login di sini!'}
             </button>
           </p>
         </div>
