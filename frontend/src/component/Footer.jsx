@@ -25,7 +25,7 @@ const Footer = () => {
             <div className="flex gap-3 text-slate-500 text-sm">
               <HiMapPin className="w-5 h-5 flex-shrink-0 text-[#A7A7DB]" />
               <p>
-                Jl. Braga No. 123, Sumur Bandung, Kota Bandung, Jawa Barat 40111
+                Jl. Cidurian utara, Gg sukabakti 1. No 45 Bandung, Jawa Barat
               </p>
             </div>
           </div>
@@ -56,14 +56,14 @@ const Footer = () => {
                 className="flex items-center gap-3 text-slate-500 text-sm hover:text-slate-900 transition-colors"
               >
                 <HiPhone className="w-5 h-5 text-[#E19898]" />
-                +62 812-3456-7890
+                085624971969
               </a>
               <a
                 href="#"
                 className="flex items-center gap-3 text-slate-500 text-sm hover:text-slate-900 transition-colors"
               >
                 <HiEnvelope className="w-5 h-5 text-[#A3B18A]" />
-                hello@thestoryshoot.com
+                thestoryshoot@gmail.com
               </a>
             </div>
           </div>

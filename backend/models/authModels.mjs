@@ -1,7 +1,6 @@
 import db from "../config/db.mjs";
 
 const AuthModel = {
-  // login
   findByEmail: async (email) => {
     const [rows] = await db.execute("SELECT * FROM users WHERE email = ?", [
       email,
@@ -9,7 +8,6 @@ const AuthModel = {
     return rows[0];
   },
 
-  // profile - SUDAH DIPERBAIKI (Tambah async)
   findById: async (id) => {
     try {
       const [rows] = await db.execute(
@@ -22,7 +20,6 @@ const AuthModel = {
     }
   },
 
-  // register
   create: async (data) => {
     const { nama_lengkap, username, email, nomor_hp, password } = data;
 

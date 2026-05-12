@@ -236,7 +236,7 @@ const BookingPage = () => {
                 ⏱ {getDurasiLabel(studio.durasi)}
               </span>
               <span className="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1 rounded-full">
-                💰 Rp {Number(studio.harga).toLocaleString("id-ID")} / sesi
+                Rp {Number(studio.harga).toLocaleString("id-ID")} / sesi
               </span>
               <span className="bg-green-50 text-green-600 text-xs font-semibold px-3 py-1 rounded-full">
                 ● Tersedia

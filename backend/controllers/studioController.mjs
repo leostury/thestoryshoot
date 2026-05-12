@@ -3,7 +3,7 @@ import db from "../config/db.mjs";
 
 export const getAllStudios = async (req, res) => {
   try {
-    const { kategori } = req.query; // menerima id_kategori angka
+    const { kategori } = req.query;
 
     const [studios] = await db.query(
       `SELECT s.* FROM studio s 

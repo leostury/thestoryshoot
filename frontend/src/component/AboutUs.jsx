@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import assets from "../assets/assets"; // Menggunakan file assets yang sudah kamu buat
+import assets from "../assets/assets";
 
 const AboutUs = () => {
   return (

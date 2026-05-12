@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '../component/Navbar.jsx';
-import Footer from '../component/Footer.jsx';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../component/Navbar.jsx";
+import Footer from "../component/Footer.jsx";
 
 const MyBookings = () => {
   const navigate = useNavigate();
@@ -16,26 +16,26 @@ const MyBookings = () => {
 
   const fetchMyBookings = async () => {
     try {
-      const token = localStorage.getItem('token');
-      console.log('Token dari localStorage:', token);
+      const token = localStorage.getItem("token");
+      console.log("Token dari localStorage:", token);
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/bookings/my`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           withCredentials: true,
-        }
+        },
       );
       if (res.data.status) setBookings(res.data.data);
     } catch (err) {
-      console.error('Gagal load history:', err);
+      console.error("Gagal load history:", err);
       if (err.response?.status === 403) {
         console.error(
-          '🚫 Autentikasi gagal - Token mungkin expired atau invalid'
+          "🚫 Autentikasi gagal - Token mungkin expired atau invalid",
         );
-        console.error('Response:', err.response?.data);
+        console.error("Response:", err.response?.data);
       }
     } finally {
       setLoading(false);
@@ -48,33 +48,37 @@ const MyBookings = () => {
 
   const handleUploadPayment = async (e) => {
     e.preventDefault();
-    if (!file) return alert('Pilih file bukti transfer dulu!');
+    if (!file) return alert("Pilih file bukti transfer dulu!");
 
     setUploadLoading(true);
     const formData = new FormData();
-    formData.append('bukti', file);
-    formData.append('kode_booking', selectedBooking.kode_booking);
-    formData.append('jumlah_bayar', selectedBooking.total_harga);
-    formData.append('metode_pembayaran', 'transferbank');
-
+    formData.append("bukti", file);
+    formData.append("kode_booking", selectedBooking.kode_booking);
+    formData.append("jumlah_bayar", selectedBooking.total_harga);
+    formData.append("metode_pembayaran", "transferbank");
+    // Ganti bagian alert di dalam try block
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       await axios.post(
         `${import.meta.env.VITE_API_URL}/payments/upload`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
-      alert('Bukti terkirim! Menunggu verifikasi admin.');
+
+      // Update Pesan alert-nya
+      alert("Pembayaran Berhasil! Status pesanan kamu kini sudah aktif.");
+
       setShowPayModal(false);
       setFile(null);
-      fetchMyBookings();
+      fetchMyBookings(); // Ini akan me-refresh list dan menampilkan status terbaru
     } catch (err) {
-      alert('Gagal kirim pembayaran.');
+      // ...
+      alert("Gagal kirim pembayaran.");
     } finally {
       setUploadLoading(false);
     }
@@ -82,28 +86,28 @@ const MyBookings = () => {
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();
-    if (!window.confirm('Yakin ingin membatalkan pesanan ini?')) return;
+    if (!window.confirm("Yakin ingin membatalkan pesanan ini?")) return;
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       await axios.delete(`${import.meta.env.VITE_API_URL}/bookings/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchMyBookings();
     } catch (err) {
-      alert('Gagal menghapus.');
+      alert("Gagal menghapus.");
     }
   };
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-600';
-      case 'waiting':
-        return 'bg-blue-100 text-blue-600';
-      case 'success':
-        return 'bg-green-100 text-green-600';
+      case "pending":
+        return "bg-yellow-100 text-yellow-600";
+      case "waiting":
+        return "bg-blue-100 text-blue-600";
+      case "success":
+        return "bg-green-100 text-green-600";
       default:
-        return 'bg-slate-100 text-slate-600';
+        return "bg-slate-100 text-slate-600";
     }
   };
 
@@ -153,10 +157,10 @@ const MyBookings = () => {
                       {item.nama_studio}
                     </h3>
                     <p className="text-[10px] text-slate-400 font-bold mt-0.5 uppercase tracking-widest">
-                      {new Date(item.tanggal).toLocaleDateString('id-ID', {
-                        day: '2-digit',
-                        month: 'short',
-                      })}{' '}
+                      {new Date(item.tanggal).toLocaleDateString("id-ID", {
+                        day: "2-digit",
+                        month: "short",
+                      })}{" "}
                       • {item.jam.slice(0, 5)} WIB
                     </p>
                   </div>
@@ -164,11 +168,11 @@ const MyBookings = () => {
 
                 <div className="flex flex-col items-end gap-3 mt-4 md:mt-0 w-full md:w-auto">
                   <p className="font-black text-xl text-slate-900 tracking-tighter">
-                    Rp {Number(item.total_harga).toLocaleString('id-ID')}
+                    Rp {Number(item.total_harga).toLocaleString("id-ID")}
                   </p>
 
                   <div className="flex gap-2">
-                    {item.status === 'pending' && (
+                    {item.status === "pending" && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -180,7 +184,7 @@ const MyBookings = () => {
                         Bayar
                       </button>
                     )}
-                    {item.status === 'pending' && (
+                    {item.status === "pending" && (
                       <button
                         onClick={(e) => handleDelete(e, item.id_booking)}
                         className="bg-red-50 text-red-500 border border-red-100 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all"
@@ -255,9 +259,9 @@ const MyBookings = () => {
                       Total Bayar
                     </p>
                     <p className="text-xl font-black text-slate-900">
-                      Rp{' '}
+                      Rp{" "}
                       {Number(selectedBooking?.total_harga).toLocaleString(
-                        'id-ID'
+                        "id-ID",
                       )}
                     </p>
                   </div>
@@ -317,11 +321,11 @@ const MyBookings = () => {
                     disabled={uploadLoading || !file}
                     className={`flex-1 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl transition-all active:scale-95 ${
                       file && !uploadLoading
-                        ? 'bg-slate-900 text-white shadow-slate-200'
-                        : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                        ? "bg-slate-900 text-white shadow-slate-200"
+                        : "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
                     }`}
                   >
-                    {uploadLoading ? 'Mengirim...' : 'Konfirmasi Bayar'}
+                    {uploadLoading ? "Mengirim..." : "Konfirmasi Bayar"}
                   </button>
                 </div>
                 <p className="text-[9px] text-slate-400 text-center leading-relaxed">

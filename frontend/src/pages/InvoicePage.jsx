@@ -13,7 +13,7 @@ const InvoicePage = () => {
     const fetchInvoiceDetail = async () => {
       try {
         const token = localStorage.getItem("token");
-        // Gunakan endpoint detail booking kamu
+
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/bookings/my`,
           {
@@ -21,7 +21,6 @@ const InvoicePage = () => {
           },
         );
 
-        // Cari data yang spesifik sesuai kode_booking dari URL
         const currentBooking = res.data.data.find(
           (b) => b.kode_booking === kode_booking,
         );

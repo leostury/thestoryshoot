@@ -1,20 +1,35 @@
 import db from "../config/db.mjs";
 
 const bookingModels = {
-  getBookedSlots: async (id_studio, tanggal) => {
-    try {
-      const [rows] = await db.query(
-        `SELECT TIME_FORMAT(jam, '%H:%i') as jam 
-         FROM booking
-         WHERE id_studio = ? AND tanggal = ? AND status != 'cancelled'`,
-        [id_studio, tanggal],
-      );
-      console.log("rows:", rows);
-      return rows.map((r) => r.jam);
-    } catch (err) {
-      console.log("DB ERROR:", err.message);
-      throw err;
+  // getBookedSlots: async (id_studio, tanggal) => {
+  //   try {
+  //     const [rows] = await db.query(
+  //       `SELECT TIME_FORMAT(jam, '%H:%i') as jam
+  //        FROM booking
+  //        WHERE id_studio = ? AND tanggal = ? AND status != 'cancelled'`,
+  //       [id_studio, tanggal],
+  //     );
+  //     console.log("rows:", rows);
+  //     return rows.map((r) => r.jam);
+  //   } catch (err) {
+  //     console.log("DB ERROR:", err.message);
+  //     throw err;
+  //   }
+
+  // },
+  getBookedSlots: async (id_studio, tanggal, exclude_id = null) => {
+    let query = `SELECT TIME_FORMAT(jam, '%H:%i') as jam 
+               FROM booking
+               WHERE id_studio = ? AND tanggal = ? AND status != 'cancelled'`;
+    const params = [id_studio, tanggal];
+
+    if (exclude_id) {
+      query += ` AND id_booking != ?`;
+      params.push(exclude_id);
     }
+
+    const [rows] = await db.query(query, params);
+    return rows.map((r) => r.jam);
   },
 
   // ... kode lainnya ...
@@ -43,6 +58,7 @@ const bookingModels = {
        WHERE kode_booking = ?`,
       [status, bukti_file, kode_booking],
     );
+    console.log("STATUS LAMA SEBELUM UPDATE:", statusLama);
     return result.affectedRows > 0;
   },
 
@@ -82,21 +98,11 @@ const bookingModels = {
   },
 
   updateJadwal: async (id_booking, id_user, tanggal, jam) => {
-    const [current] = await db.query(
-      "SELECT status FROM booking WHERE id_booking = ? AND id_user = ?",
-      [id_booking, id_user],
-    );
-
-    const statusBaru =
-      current[0].status === "paid" || current[0].status === "confirmed"
-        ? current[0].status
-        : "pending";
-
     const [result] = await db.query(
       `UPDATE booking 
-       SET tanggal = ?, jam = ?, status = ? 
-       WHERE id_booking = ? AND id_user = ?`,
-      [tanggal, jam, statusBaru, id_booking, id_user],
+     SET tanggal = ?, jam = ?
+     WHERE id_booking = ? AND id_user = ? AND status != 'cancelled'`,
+      [tanggal, jam, id_booking, id_user],
     );
     return result.affectedRows > 0;
   },

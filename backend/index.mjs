@@ -1,11 +1,11 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import authRoutes from './routers/authRouters.mjs';
-import apiRoutes from './routers/apiRouters.mjs';
-import paymentRoutes from './routers/paymentRoutes.mjs';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+import path from "path";
+import authRoutes from "./routers/authRouters.mjs";
+import apiRoutes from "./routers/apiRouters.mjs";
+import paymentRoutes from "./routers/paymentRoutes.mjs";
 
 dotenv.config();
 
@@ -16,11 +16,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://127.0.0.1:5173',
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:5174",
   ...(process.env.CORS_ORIGINS
-    ? process.env.CORS_ORIGINS.split(',').map((origin) => origin.trim())
+    ? process.env.CORS_ORIGINS.split(",").map((origin) => origin.trim())
     : []),
 ];
 
@@ -36,30 +37,30 @@ app.use(
       return callback(new Error(`Not allowed by CORS: ${origin}`));
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 // Perbaiki static path agar lebih aman
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Jalankan rute
-app.use('/api/auth', authRoutes);
-app.use('/api/payments', paymentRoutes);
-app.use('/api', apiRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/payments", paymentRoutes);
+app.use("/api", apiRoutes);
 // ... sisanya
 
 // Di index.mjs setelah app.use("/api", apiRoutes);
-console.log('--- DAFTAR RUTE TERDETEKSI ---');
+console.log("--- DAFTAR RUTE TERDETEKSI ---");
 apiRoutes.stack.forEach((layer) => {
   if (layer.route) {
     console.log(
-      `${Object.keys(layer.route.methods).join(',').toUpperCase()} -> /api${layer.route.path}`
+      `${Object.keys(layer.route.methods).join(",").toUpperCase()} -> /api${layer.route.path}`,
     );
   }
 });

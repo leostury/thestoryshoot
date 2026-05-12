@@ -10,7 +10,6 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dest = path.join(__dirname, "../public/images/payments");
 
-    // Buat folder otomatis jika belum ada
     if (!fs.existsSync(dest)) {
       fs.mkdirSync(dest, { recursive: true });
     }

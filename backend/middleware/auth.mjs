@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
 
-  // 1. PERBAIKAN: Gunakan startsWith (pakai 's')
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       status: false,
@@ -28,11 +27,8 @@ export const authenticateToken = (req, res, next) => {
       });
     }
 
-    // 2. SINKRONISASI: Simpan ke req.userId agar sesuai dengan Controller & Model kamu
-    // Pastikan saat Login, kamu menyimpan ID user di properti 'id'
     req.userId = decoded.id;
 
-    // Optional: simpan ke req.user juga agar lebih aman
     req.user = decoded;
 
     next();

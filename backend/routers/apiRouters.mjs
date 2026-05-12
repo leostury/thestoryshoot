@@ -1,6 +1,6 @@
 import express from "express";
 import * as paymentController from "../controllers/paymentController.mjs";
-import { upload } from "../middleware/uploadMiddleware.mjs"; // ✅ pakai middleware yang benar
+import { upload } from "../middleware/uploadMiddleware.mjs";
 
 import { getKategori } from "../controllers/kategoriController.mjs";
 import {
@@ -20,9 +20,6 @@ import { verifyToken } from "../middleware/verifyToken.mjs";
 
 const router = express.Router();
 
-// ==========================================
-// MIDDLEWARE & ROUTES
-// ==========================================
 router.use((req, res, next) => {
   console.log("🚀 Router Hit:", req.method, req.path);
   next();
@@ -32,9 +29,9 @@ router.get("/categories", getKategori);
 router.get("/studios", getAllStudios);
 router.get("/studios/:id", getStudioDetail);
 
-// Booking Routes
 router.get("/bookings/check", checkAvailability);
 router.get("/bookings/my", verifyToken, getMyBookings);
+
 router.post("/bookings", verifyToken, createBooking);
 router.get("/bookings/:id", verifyToken, getDetail);
 router.delete("/bookings/:id", verifyToken, remove);
@@ -42,7 +39,6 @@ router.delete("/bookings/:id", verifyToken, remove);
 router.put("/bookings/:id/reschedule", verifyToken, reschedule);
 router.put("/bookings/:id/cancel", verifyToken, cancelBooking);
 
-// ✅ Payment Route - pakai uploadMiddleware + processPayment
 router.post(
   "/upload",
   verifyToken,
