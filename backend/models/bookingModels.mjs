@@ -1,22 +1,6 @@
 import db from "../config/db.mjs";
 
 const bookingModels = {
-  // getBookedSlots: async (id_studio, tanggal) => {
-  //   try {
-  //     const [rows] = await db.query(
-  //       `SELECT TIME_FORMAT(jam, '%H:%i') as jam
-  //        FROM booking
-  //        WHERE id_studio = ? AND tanggal = ? AND status != 'cancelled'`,
-  //       [id_studio, tanggal],
-  //     );
-  //     console.log("rows:", rows);
-  //     return rows.map((r) => r.jam);
-  //   } catch (err) {
-  //     console.log("DB ERROR:", err.message);
-  //     throw err;
-  //   }
-
-  // },
   getBookedSlots: async (id_studio, tanggal, exclude_id = null) => {
     let query = `SELECT TIME_FORMAT(jam, '%H:%i') as jam 
                FROM booking
@@ -32,9 +16,7 @@ const bookingModels = {
     return rows.map((r) => r.jam);
   },
 
-  // ... kode lainnya ...
   create: async ({ id_user, id_studio, tanggal, jam, total_harga }) => {
-    // Generate kode booking unik
     const kode_booking = `BK-${new Date().toISOString().slice(2, 10).replace(/-/g, "")}-${Math.floor(Math.random() * 900 + 100)}`;
 
     const [result] = await db.query(
@@ -43,13 +25,11 @@ const bookingModels = {
       [kode_booking, id_user, id_studio, tanggal, jam, total_harga],
     );
 
-    // Kembalikan objek yang berisi id dan kode untuk digunakan controller
     return {
       id_booking: result.insertId,
       kode_booking: kode_booking,
     };
   },
-  // ... kode lainnya ...
 
   updateStatusAndProof: async (kode_booking, status, bukti_file) => {
     const [result] = await db.query(
